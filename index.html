@@ -1,377 +1,455 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بلوري ماتشا 🍵</title>
-  <style>
-    /* سطر إخفاء شعار نتليفاي نهائياً */
-    lit-badge, iframe[src*="netlify"], .netlify-badge, div:has(> a[href*="netlify.com"]) { display: none !important; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blurry Matcha | طلبات ماتشا</title>
+    <!-- خط عربي أنيق -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* إخفاء شعار نتليفاي بشكل جذري من الصفحة للزوار */
+        body > div[style*="z-index"], 
+        #netlify-badge, 
+        iframe[src*="netlify"], 
+        a[href*="netlify.com/support"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: #f8faf9; color: #2b3a32; padding: 20px 15px; display: flex; justify-content: center; }
-    .container { max-width: 480px; width: 100%; }
-    .header { text-align: center; margin-bottom: 20px; }
-    .header h1 { color: #2873b5; font-size: 24px; }
-    .header p { color: #63b39d; font-size: 14px; }
-    
-    .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 25px; }
-    .card { background-color: #ffffff; border: 1px solid #e1efe9; border-radius: 16px; padding: 15px 12px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
-    .ar-name { font-size: 16px; font-weight: bold; color: #2b3a32; margin-top: 5px; }
-    .en-name { font-size: 12px; color: #777; margin-bottom: 8px; }
-    .price { font-size: 15px; font-weight: bold; color: #2873b5; margin-bottom: 10px; }
-    .btn-add { background-color: #2873b5; color: white; border: none; padding: 8px; border-radius: 8px; font-size: 13px; cursor: pointer; width: 100%; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
 
-    .section-box { background: white; border-radius: 16px; padding: 18px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #eef2f0; }
-    .section-title { font-size: 16px; font-weight: bold; color: #2873b5; margin-bottom: 12px; border-bottom: 2px solid #eef2f0; padding-bottom: 6px; }
-    .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13px; border-bottom: 1px solid #f0f0f0; padding-bottom: 6px; }
-    .total-box { font-weight: bold; font-size: 16px; display: flex; justify-content: space-between; margin-top: 12px; padding-top: 8px; border-top: 1px dashed #ccc; }
+        body {
+            background-color: #f4f7f4;
+            color: #2c3e2d;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+        }
 
-    .bank-info { background-color: #f0f7f4; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 13px; line-height: 1.6; border: 1px dashed #63b39d; display: none; }
-    .bank-info strong { color: #2873b5; }
-    .iban-box { font-weight: bold; background: #e2f0eb; padding: 4px 8px; border-radius: 6px; display: inline-block; direction: ltr; margin-top: 4px; user-select: all; }
+        .container {
+            max-width: 480px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(44, 62, 45, 0.08);
+        }
 
-    .pickup-info { background-color: #f0f7f4; border-radius: 10px; padding: 10px 12px; margin-top: 10px; font-size: 13px; color: #27ae60; font-weight: bold; border: 1px dashed #27ae60; display: block; }
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px dashed #d8e2d8;
+            padding-bottom: 15px;
+        }
 
-    .input-group { margin-bottom: 12px; text-align: right; }
-    .input-group label { display: block; font-size: 13px; margin-bottom: 4px; color: #555; }
-    .input-group input, .input-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; outline: none; background: #fff; }
+        header h1 {
+            font-size: 26px;
+            color: #3b533c;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
 
-    .btn-pay { background-color: #27ae60; color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-    .btn-pay:active { background-color: #219653; }
-    .copy-note { font-size: 11px; color: #666; text-align: center; margin-top: 6px; line-height: 1.4; }
-  </style>
+        header p {
+            color: #7f9a80;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 20px 0 10px;
+            color: #3b533c;
+            border-right: 4px solid #5a7d5b;
+            padding-right: 8px;
+        }
+
+        .menu-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .item-card {
+            background: #fafcf9;
+            border: 1px solid #e1eade;
+            border-radius: 12px;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .item-card:hover {
+            border-color: #5a7d5b;
+        }
+
+        .item-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2c3e2d;
+        }
+
+        .item-info span {
+            font-size: 13px;
+            color: #5a7d5b;
+            font-weight: 500;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qty-btn {
+            background: #5a7d5b;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .qty-btn:active {
+            background: #3b533c;
+        }
+
+        .qty-input {
+            width: 35px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 3px;
+            background: #fff;
+        }
+
+        .options-group {
+            margin-top: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #3b533c;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d8e2d8;
+            border-radius: 10px;
+            font-size: 14px;
+            background: #fafcf9;
+            color: #2c3e2d;
+            outline: none;
+            margin-bottom: 15px;
+        }
+
+        select:focus, input[type="text"]:focus {
+            border-color: #5a7d5b;
+            background: #fff;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            accent-color: #5a7d5b;
+            cursor: pointer;
+        }
+
+        .summary-box {
+            background: #eef3ee;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .summary-box h3 {
+            font-size: 16px;
+            color: #3b533c;
+            margin-bottom: 5px;
+        }
+
+        .total-price {
+            font-size: 20px;
+            font-weight: 900;
+            color: #5a7d5b;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: #3b533c;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.2s;
+            box-shadow: 0 4px 12px rgba(59, 83, 60, 0.2);
+        }
+
+        .checkout-btn:hover {
+            background: #2c3e2d;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #8fa890;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="header">
-      <h1>بلوري ماتشا 🍵</h1>
-      <p>اختر مشروبك وأكمل طلبك بسهولة</p>
-    </div>
+    <div class="container">
+        <header>
+            <h1>Blurry Matcha</h1>
+            <p>اختر طلبك، ونسق معنا بكل سهولة 🌿</p>
+        </header>
 
-    <div class="menu-grid">
-      <!-- 1. فانيلا فوم بلوري -->
-      <div class="card">
-        <div>
-          <div class="ar-name">فانيلا فوم بلوري</div>
-          <div class="en-name">Vanilla Foam Matcha</div>
-          <div class="price">20 SAR</div>
-        </div>
-        <div style="margin: 8px 0; text-align: right;">
-          <select id="milk-1" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px; margin-bottom: 4px;">
-            <option value="حليب عادي|0">حليب عادي - مجاناً</option>
-            <option value="حليب خالي من اللاكتوز|1">حليب خالي من اللاكتوز (+1)</option>
-            <option value="حليب الشوفان|3">حليب الشوفان (+3)</option>
-            <option value="حليب فانيلا|3">حليب فانيلا (+3)</option>
-            <option value="حليب جوز الهند|3">حليب جوز الهند (+3)</option>
-          </select>
-          <select id="extra-1" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px;">
-            <option value="بدون إضافات|0">بدون إضافات</option>
-            <option value="دبل ماتشا|2">دبل ماتشا (+2)</option>
-            <option value="زيادة سيروب|1">زيادة سيروب (+1)</option>
-          </select>
-        </div>
-        <button class="btn-add" onclick="addCustomItem('فانيلا فوم بلوري', 20, 'milk-1', 'extra-1')">+ إضافة للسلة</button>
-      </div>
-
-      <!-- 2. كلاسيك بلوري -->
-      <div class="card">
-        <div>
-          <div class="ar-name">كلاسيك بلوري</div>
-          <div class="en-name">Classic Matcha</div>
-          <div class="price">19 SAR</div>
-        </div>
-        <div style="margin: 8px 0; text-align: right;">
-          <select id="milk-2" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px; margin-bottom: 4px;">
-            <option value="حليب عادي|0">حليب عادي - مجاناً</option>
-            <option value="حليب خالي من اللاكتوز|1">حليب خالي من اللاكتوز (+1)</option>
-            <option value="حليب الشوفان|3">حليب الشوفان (+3)</option>
-            <option value="حليب فانيلا|3">حليب فانيلا (+3)</option>
-            <option value="حليب جوز الهند|3">حليب جوز الهند (+3)</option>
-          </select>
-          <select id="extra-2" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px;">
-            <option value="بدون إضافات|0">بدون إضافات</option>
-            <option value="دبل ماتشا|2">دبل ماتشا (+2)</option>
-            <option value="زيادة سيروب|1">زيادة سيروب (+1)</option>
-          </select>
-        </div>
-        <button class="btn-add" onclick="addCustomItem('كلاسيك بلوري', 19, 'milk-2', 'extra-2')">+ إضافة للسلة</button>
-      </div>
-
-      <!-- 3. بنانا بريد بلوري -->
-      <div class="card">
-        <div>
-          <div class="ar-name">بنانا بريد بلوري</div>
-          <div class="en-name">Banana Bread</div>
-          <div class="price">22 SAR</div>
-        </div>
-        <div style="margin: 8px 0; text-align: right;">
-          <select id="milk-3" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px; margin-bottom: 4px;">
-            <option value="حليب عادي|0">حليب عادي - مجاناً</option>
-            <option value="حليب خالي من اللاكتوز|1">حليب خالي من اللاكتوز (+1)</option>
-            <option value="حليب الشوفان|3">حليب الشوفان (+3)</option>
-            <option value="حليب فانيلا|3">حليب فانيلا (+3)</option>
-            <option value="حليب جوز الهند|3">حليب جوز الهند (+3)</option>
-          </select>
-          <select id="extra-3" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px;">
-            <option value="بدون إضافات|0">بدون إضافات</option>
-            <option value="دبل ماتشا|2">دبل ماتشا (+2)</option>
-            <option value="زيادة سيروب|1">زيادة سيروب (+1)</option>
-          </select>
-        </div>
-        <button class="btn-add" onclick="addCustomItem('بنانا بريد بلوري', 22, 'milk-3', 'extra-3')">+ إضافة للسلة</button>
-      </div>
-
-      <!-- 4. خليط التوت بلوري -->
-      <div class="card">
-        <div>
-          <div class="ar-name">خليط التوت بلوري</div>
-          <div class="en-name">Mixed berry Matcha</div>
-          <div class="price">23 SAR</div>
-        </div>
-        <div style="margin: 8px 0; text-align: right;">
-          <select id="milk-4" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px; margin-bottom: 4px;">
-            <option value="حليب عادي|0">حليب عادي - مجاناً</option>
-            <option value="حليب خالي من اللاكتوز|1">حليب خالي من اللاكتوز (+1)</option>
-            <option value="حليب الشوفان|3">حليب الشوفان (+3)</option>
-            <option value="حليب فانيلا|3">حليب فانيلا (+3)</option>
-            <option value="حليب جوز الهند|3">حليب جوز الهند (+3)</option>
-          </select>
-          <select id="extra-4" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px;">
-            <option value="بدون إضافات|0">بدون إضافات</option>
-            <option value="دبل ماتشا|2">دبل ماتشا (+2)</option>
-            <option value="زيادة سيروب|1">زيادة سيروب (+1)</option>
-          </select>
-        </div>
-        <button class="btn-add" onclick="addCustomItem('خليط التوت بلوري', 23, 'milk-4', 'extra-4')">+ إضافة للسلة</button>
-      </div>
-
-      <!-- 5. فراولة بلوري -->
-      <div class="card">
-        <div>
-          <div class="ar-name">فراولة بلوري</div>
-          <div class="en-name">Strawberry Matcha</div>
-          <div class="price">22 SAR</div>
-        </div>
-        <div style="margin: 8px 0; text-align: right;">
-          <select id="milk-5" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px; margin-bottom: 4px;">
-            <option value="حليب عادي|0">حليب عادي - مجاناً</option>
-            <option value="حليب خالي من اللاكتوز|1">حليب خالي من اللاكتوز (+1)</option>
-            <option value="حليب الشوفان|3">حليب الشوفان (+3)</option>
-            <option value="حليب فانيلا|3">حليب فانيلا (+3)</option>
-            <option value="حليب جوز الهند|3">حليب جوز الهند (+3)</option>
-          </select>
-          <select id="extra-5" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px;">
-            <option value="بدون إضافات|0">بدون إضافات</option>
-            <option value="دبل ماتشا|2">دبل ماتشا (+2)</option>
-            <option value="زيادة سيروب|1">زيادة سيروب (+1)</option>
-          </select>
-        </div>
-        <button class="btn-add" onclick="addCustomItem('فراولة بلوري', 22, 'milk-5', 'extra-5')">+ إضافة للسلة</button>
-      </div>
-
-      <!-- 6. سبيشال بلوري -->
-      <div class="card">
-        <div>
-          <div class="ar-name">سبيشال بلوري</div>
-          <div class="en-name">Special Matcha</div>
-          <div class="price">24 SAR</div>
-        </div>
-        <div style="margin: 8px 0; text-align: right;">
-          <select id="milk-6" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px; margin-bottom: 4px;">
-            <option value="حليب عادي|0">حليب عادي - مجاناً</option>
-            <option value="حليب خالي من اللاكتوز|1">حليب خالي من اللاكتوز (+1)</option>
-            <option value="حليب الشوفان|3">حليب الشوفان (+3)</option>
-            <option value="حليب فانيلا|3">حليب فانيلا (+3)</option>
-            <option value="حليب جوز الهند|3">حليب جوز الهند (+3)</option>
-          </select>
-          <select id="extra-6" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px;">
-            <option value="بدون إضافات|0">بدون إضافات</option>
-            <option value="دبل ماتشا|2">دبل ماتشا (+2)</option>
-            <option value="زيادة سيروب|1">زيادة سيروب (+1)</option>
-          </select>
-        </div>
-        <button class="btn-add" onclick="addCustomItem('سبيشال بلوري', 24, 'milk-6', 'extra-6')">+ إضافة للسلة</button>
-      </div>
-    </div>
-
-    <!-- سلة المشتريات -->
-    <div class="section-box">
-      <div class="section-title">🛒 سلة المشتريات</div>
-      <div id="cart-list">
-        <p style="color: #888; font-size: 13px; text-align: center;">السلة فارغة حالياً</p>
-      </div>
-      <div class="total-box">
-        <span>المجموع الكلي:</span>
-        <span id="total-price">0 SAR</span>
-      </div>
-    </div>
-
-    <!-- معلومات الطلب وطريقة الدفع -->
-    <div class="section-box">
-      <div class="section-title">📋 بيانات الطلب والدفع</div>
-
-      <div class="input-group">
-        <label>الاسم</label>
-        <input type="text" id="name" placeholder="أدخل اسمك">
-      </div>
-
-      <div class="input-group">
-        <label>رقم الجوال</label>
-        <input type="tel" id="phone" placeholder="05xxxxxxxx">
-      </div>
-
-      <div class="input-group">
-        <label>طريقة الدفع</label>
-        <select id="payment-method" onchange="togglePaymentDetails()">
-          <option value="الدفع عند الاستلام">الدفع عند الاستلام</option>
-          <option value="تحويل بنكي">تحويل بنكي</option>
-        </select>
-        
-        <!-- صندوق بيانات التحويل البنكي يظهر عند اختيار تحويل بنكي -->
-        <div id="bank-info-box" class="bank-info">
-          <strong>بيانات الحساب البنكي:</strong><br>
-          • البنك: <span>مصرف الانماء</span><br>
-          • رقم الآيبان (IBAN):<br>
-          <div class="iban-box">SA5005000068207637482000</div>
-        </div>
-
-        <!-- عبارة موقع الاستلام تظهر افتراضياً لأن الخيار الافتراضي هو الدفع عند الاستلام -->
-        <div id="pickup-info-box" class="pickup-info">
-          📍 يتم ارسال موقع استلام الطلب بعد التاكيد
-        </div>
-      </div>
-
-      <button class="btn-pay" onclick="checkout()">إرسال الطلب للاعتماد 🚀</button>
-      <div class="copy-note">لتأكيد الطلب الرجاء ارسال تفاصيل الطلب على الرسائل الخاصة</div>
-    </div>
-
-  </div>
-
-  <script>
-    let cart = [];
-    let total = 0;
-
-    function addCustomItem(baseName, basePrice, milkSelectId, extraSelectId) {
-      const milkEl = document.getElementById(milkSelectId);
-      const extraEl = document.getElementById(extraSelectId);
-
-      const milkData = milkEl.value.split('|');
-      const extraData = extraEl.value.split('|');
-
-      const milkName = milkData[0];
-      const milkPrice = parseInt(milkData[1]);
-
-      const extraName = extraData[0];
-      const extraPrice = parseInt(extraData[1]);
-
-      const finalPrice = basePrice + milkPrice + extraPrice;
-      
-      let details = baseName;
-      if (milkName !== 'حليب عادي') details += ` (${milkName})`;
-      if (extraName !== 'بدون إضافات') details += ` + ${extraName}`;
-
-      cart.push({ name: details, price: finalPrice });
-      total += finalPrice;
-      updateCartUI();
-    }
-
-    function updateCartUI() {
-      const cartList = document.getElementById('cart-list');
-      const totalPrice = document.getElementById('total-price');
-
-      if (cart.length === 0) {
-        cartList.innerHTML = '<p style="color: #888; font-size: 13px; text-align: center;">السلة فارغة حالياً</p>';
-      } else {
-        cartList.innerHTML = '';
-        cart.forEach((item, index) => {
-          cartList.innerHTML += `
-            <div class="cart-item">
-              <div>
-                <span style="font-weight: bold; display: block; color: #2b3a32;">${item.name}</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-weight: bold; color: #2873b5;">${item.price} SAR</span>
-                <button onclick="removeItem(${index})" style="background: #ffcccc; color: #c0392b; border: none; border-radius: 4px; padding: 2px 6px; font-size: 11px; cursor: pointer;">حذف</button>
-              </div>
+        <!-- قائمة المنتجات -->
+        <div class="section-title">قائمة الماتشا والمخبوزات</div>
+        <div class="menu-grid" id="menu-items">
+            <!-- سيتم توليد العناصر برمجياً أو وضعها مباشرة -->
+            <div class="item-card" data-name="Vanilla Foam" data-price="20">
+                <div class="item-info">
+                    <h3>Vanilla Foam</h3>
+                    <span>20 SAR</span>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" class="qty-btn" onclick="changeQty(this, -1)">-</button>
+                    <input type="text" class="qty-input" value="0" readonly>
+                    <button type="button" class="qty-btn" onclick="changeQty(this, 1)">+</button>
+                </div>
             </div>
-          `;
-        });
-      }
-      totalPrice.innerText = total + ' SAR';
-    }
 
-    function removeItem(index) {
-      total -= cart[index].price;
-      cart.splice(index, 1);
-      updateCartUI();
-    }
+            <div class="item-card" data-name="Classic Matcha" data-price="19">
+                <div class="item-info">
+                    <h3>Classic Matcha</h3>
+                    <span>19 SAR</span>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" class="qty-btn" onclick="changeQty(this, -1)">-</button>
+                    <input type="text" class="qty-input" value="0" readonly>
+                    <button type="button" class="qty-btn" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
 
-    // دالة تبديل العناصر بناءً على طريقة الدفع المختارة
-    function togglePaymentDetails() {
-      const paymentMethod = document.getElementById('payment-method').value;
-      const bankInfoBox = document.getElementById('bank-info-box');
-      const pickupInfoBox = document.getElementById('pickup-info-box');
+            <div class="item-card" data-name="Banana Bread" data-price="22">
+                <div class="item-info">
+                    <h3>Banana Bread</h3>
+                    <span>22 SAR</span>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" class="qty-btn" onclick="changeQty(this, -1)">-</button>
+                    <input type="text" class="qty-input" value="0" readonly>
+                    <button type="button" class="qty-btn" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
 
-      if (paymentMethod === 'تحويل بنكي') {
-        bankInfoBox.style.display = 'block';
-        pickupInfoBox.style.display = 'none';
-      } else {
-        bankInfoBox.style.display = 'none';
-        pickupInfoBox.style.display = 'block';
-      }
-    }
+            <div class="item-card" data-name="Mixed Berry" data-price="23">
+                <div class="item-info">
+                    <h3>Mixed Berry</h3>
+                    <span>23 SAR</span>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" class="qty-btn" onclick="changeQty(this, -1)">-</button>
+                    <input type="text" class="qty-input" value="0" readonly>
+                    <button type="button" class="qty-btn" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
 
-    function fallbackCopy(text) {
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      textArea.style.position = "fixed";
-      textArea.style.opacity = "0";
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      try {
-        document.execCommand('copy');
-      } catch (err) {}
-      document.body.removeChild(textArea);
-    }
+            <div class="item-card" data-name="Strawberry" data-price="22">
+                <div class="item-info">
+                    <h3>Strawberry</h3>
+                    <span>22 SAR</span>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" class="qty-btn" onclick="changeQty(this, -1)">-</button>
+                    <input type="text" class="qty-input" value="0" readonly>
+                    <button type="button" class="qty-btn" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
 
-    function copyToClipboard(text, callback) {
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).then(callback).catch(() => {
-          fallbackCopy(text);
-          callback();
-        });
-      } else {
-        fallbackCopy(text);
-        callback();
-      }
-    }
+            <div class="item-card" data-name="Special Matcha" data-price="24">
+                <div class="item-info">
+                    <h3>Special Matcha</h3>
+                    <span>24 SAR</span>
+                </div>
+                <div class="quantity-control">
+                    <button type="button" class="qty-btn" onclick="changeQty(this, -1)">-</button>
+                    <input type="text" class="qty-input" value="0" readonly>
+                    <button type="button" class="qty-btn" onclick="changeQty(this, 1)">+</button>
+                </div>
+            </div>
+        </div>
 
-    function checkout() {
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const paymentMethod = document.getElementById('payment-method').value;
+        <!-- خيارات الحليب -->
+        <div class="options-group">
+            <div class="section-title">نوع الحليب</div>
+            <select id="milk-option">
+                <option value="حليب عادي (Regular)">عادي (Regular)</option>
+                <option value="خالي من اللاكتوز (Lactose-Free)">خالي من اللاكتوز (Lactose-Free)</option>
+                <option value="حليب الشوفان (Oat)">شوفان (Oat)</option>
+                <option value="حليب الفانيلا (Vanilla)">فانيلا (Vanilla)</option>
+                <option value="حليب جوز الهند (Coconut)">جوز الهند (Coconut)</option>
+            </select>
+        </div>
 
-      if (cart.length === 0) { alert('يرجى إضافة مشروب للسلة أولاً!'); return; }
-      if (!name || !phone) { alert('يرجى تعبئة بيانات الاسم ورقم الجوال.'); return; }
+        <!-- الإضافات -->
+        <div class="options-group">
+            <div class="section-title">الإضافات</div>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="extras" value="Double Matcha"> دبل ماتشا (Double Matcha)
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="extras" value="Extra Syrup"> سيرب إضافي (Extra Syrup)
+                </label>
+            </div>
+        </div>
 
-      let fullOrderText = `أهلاً، أرغب بتأكيد طلبي:\n`;
-      fullOrderText += `👤 الاسم: ${name}\n`;
-      fullOrderText += `📱 الجوال: ${phone}\n\n`;
-      cart.forEach(item => {
-        fullOrderText += `- ${item.name}\n`;
-      });
-      fullOrderText += `طريقة الدفع: ${paymentMethod}\n`;
-      fullOrderText += `💰 المجموع الكلي: ${total} SAR`;
+        <!-- طريقة الدفع -->
+        <div class="options-group">
+            <div class="section-title">طريقة الدفع</div>
+            <select id="payment-option">
+                <option value="تحويل بنكي (Bank Transfer)">تحويل بنكي</option>
+                <option value="الدفع عند الاستلام (Cash on Delivery)">الدفع عند الاستلام</option>
+            </select>
+        </div>
 
-      copyToClipboard(fullOrderText, () => {
-        alert('تم النسخ شكراً لطلبك 💎');
-        window.location.href = 'https://www.instagram.com/blurrys.sa';
-      });
-    }
-  </script>
+        <!-- ملاحظات العميل -->
+        <div class="options-group">
+            <label for="customer-notes">ملاحظات إضافية (اختياري)</label>
+            <input type="text" id="customer-notes" placeholder="أي ملاحظات خاصة بالطلب؟">
+        </div>
 
+        <!-- المجموع وزر الطلب -->
+        <div class="summary-box">
+            <h3>المجموع الكلي</h3>
+            <div class="total-price"><span id="total-amount">0</span> SAR</div>
+        </div>
+
+        <button type="button" class="checkout-btn" onclick="sendOrder()">إتمام الطلب عبر Instagram</button>
+
+        <footer>
+            <p>Blurry Matcha © 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        function changeQty(button, delta) {
+            const card = button.closest('.item-card');
+            const input = card.querySelector('.qty-input');
+            let currentVal = parseInt(input.value) || 0;
+            currentVal += delta;
+            if (currentVal < 0) currentVal = 0;
+            input.value = currentVal;
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            let total = 0;
+            const cards = document.querySelectorAll('.item-card');
+            cards.forEach(card => {
+                const price = parseFloat(card.getAttribute('data-price'));
+                const qty = parseInt(card.querySelector('.qty-input').value) || 0;
+                total += price * qty;
+            });
+            document.getElementById('total-amount').innerText = total;
+        }
+
+        function sendOrder() {
+            let orderSummary = "مرحباً، أود طلب التالي من Blurry Matcha:\n\n";
+            let hasItems = false;
+            
+            const cards = document.querySelectorAll('.item-card');
+            cards.forEach(card => {
+                const qty = parseInt(card.querySelector('.qty-input').value) || 0;
+                if (qty > 0) {
+                    hasItems = true;
+                    const name = card.getAttribute('data-name');
+                    const price = card.getAttribute('data-price');
+                    orderSummary += `- ${name} × ${qty} (${price * qty} SAR)\n`;
+                }
+            });
+
+            if (!hasItems) {
+                alert("الرجاء اختيار منتج واحد على الأقل قبل إتمام الطلب.");
+                return;
+            }
+
+            const milk = document.getElementById('milk-option').value;
+            orderSummary += `\nنوع الحليب: ${milk}\n`;
+
+            const selectedExtras = [];
+            document.querySelectorAll('input[name="extras"]:checked').forEach(el => {
+                selectedExtras.push(el.value);
+            });
+            if (selectedExtras.length > 0) {
+                orderSummary += `الإضافات: ${selectedExtras.join(', ')}\n`;
+            }
+
+            const payment = document.getElementById('payment-option').value;
+            orderSummary += `طريقة الدفع: ${payment}\n`;
+
+            const notes = document.getElementById('customer-notes').value.trim();
+            if (notes) {
+                orderSummary += `ملاحظات: ${notes}\n`;
+            }
+
+            const total = document.getElementById('total-amount').innerText;
+            orderSummary += `\nالمجموع الكلي: ${total} SAR`;
+
+            // نسخ النص للحافظة
+            navigator.clipboard.writeText(orderSummary).then(() => {
+                alert("تم نسخ تفاصيل الطلب بنجاح! سيتم توجيهك الآن إلى الانستغرام.");
+                window.location.href = "https://www.instagram.com/blurrys.sa";
+            }).catch(err => {
+                // في حال فشل النسخ لأسباب أمنية في المتصفح
+                window.location.href = "https://www.instagram.com/blurrys.sa";
+            });
+        }
+    </script>
 </body>
 </html>
