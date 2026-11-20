@@ -1,272 +1,380 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blurry Matcha | بلوري ماتشا</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4A6B5B;
-            --primary-dark: #375043;
-            --accent: #87A997;
-            --bg: #F4F7F5;
-            --card-bg: #FFFFFF;
-            --text: #2C3E35;
-            --text-light: #707967;
-            --border: #E0E5D8;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بلوري ماتشا 🍵</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f8faf9; color: #2b3a32; padding: 20px 15px; display: flex; justify-content: center; }
+    .container { max-width: 480px; width: 100%; }
+    .header { text-align: center; margin-bottom: 20px; }
+    .header h1 { color: #2873b5; font-size: 24px; }
+    .header p { color: #63b39d; font-size: 14px; }
+    
+    .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 25px; }
+    .card { background-color: #ffffff; border: 1px solid #e1efe9; border-radius: 16px; padding: 15px 12px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+    .ar-name { font-size: 16px; font-weight: bold; color: #2b3a32; margin-top: 5px; }
+    .en-name { font-size: 12px; color: #777; margin-bottom: 8px; }
+    .price { font-size: 15px; font-weight: bold; color: #2873b5; margin-bottom: 10px; }
+    .btn-add { background-color: #2873b5; color: white; border: none; padding: 8px; border-radius: 8px; font-size: 13px; cursor: pointer; width: 100%; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 90px; }
+    .section-box { background: white; border-radius: 16px; padding: 18px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #eef2f0; }
+    .section-title { font-size: 16px; font-weight: bold; color: #2873b5; margin-bottom: 12px; border-bottom: 2px solid #eef2f0; padding-bottom: 6px; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13px; border-bottom: 1px solid #f0f0f0; padding-bottom: 6px; }
+    .total-box { font-weight: bold; font-size: 16px; display: flex; justify-content: space-between; margin-top: 12px; padding-top: 8px; border-top: 1px dashed #ccc; }
 
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            text-align: center;
-            padding: 30px 20px;
-            border-radius: 0 0 24px 24px;
-            box-shadow: 0 4px 15px rgba(74, 107, 91, 0.2);
-        }
+    .bank-info { background-color: #f0f7f4; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 13px; line-height: 1.6; border: 1px dashed #63b39d; display: none; }
+    .bank-info strong { color: #2873b5; }
+    .iban-box { font-weight: bold; background: #e2f0eb; padding: 4px 8px; border-radius: 6px; display: inline-block; direction: ltr; margin-top: 4px; user-select: all; }
 
-        header h1 { font-size: 26px; font-weight: 900; margin-bottom: 5px; }
-        header p { font-size: 14px; opacity: 0.9; }
+    .pickup-info { background-color: #f0f7f4; border-radius: 10px; padding: 10px 12px; margin-top: 10px; font-size: 13px; color: #27ae60; font-weight: bold; border: 1px dashed #27ae60; display: block; }
 
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .section-title { font-size: 18px; font-weight: 700; margin: 25px 0 12px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-        
-        .menu-grid { display: flex; flex-direction: column; gap: 12px; }
-        .menu-item {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-        }
-        .item-info h3 { font-size: 16px; font-weight: 700; color: var(--text); }
-        .item-info p { font-size: 13px; color: var(--text-light); margin-top: 2px; }
-        .item-price { font-size: 15px; font-weight: 800; color: var(--primary); margin-top: 4px; }
+    .input-group { margin-bottom: 12px; text-align: right; }
+    .input-group label { display: block; font-size: 13px; margin-bottom: 4px; color: #555; }
+    .input-group input, .input-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; outline: none; background: #fff; }
 
-        .counter-controls { display: flex; align-items: center; gap: 10px; background: var(--bg); padding: 4px 8px; border-radius: 8px; border: 1px solid var(--border); }
-        .counter-btn { background: var(--primary); color: white; border: none; width: 28px; height: 28px; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .counter-value { font-size: 15px; font-weight: 700; min-width: 20px; text-align: center; }
-
-        .options-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-top: 15px; }
-        .options-card label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
-        .options-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px; }
-        .option-btn { background: var(--bg); border: 1px solid var(--border); padding: 10px; border-radius: 8px; text-align: center; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--text); transition: all 0.2s; }
-        .option-btn.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 700; }
-
-        input[type="text"] { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; outline: none; background: var(--bg); margin-top: 5px; }
-
-        .cart-summary { background: var(--card-bg); border-top: 2px solid var(--primary); padding: 15px 20px; position: fixed; bottom: 0; left: 0; right: 0; box-shadow: 0 -4px 15px rgba(0,0,0,0.08); display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
-        .total-price { font-size: 18px; font-weight: 900; color: var(--primary); }
-        .checkout-btn { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
-        .checkout-btn:hover { background: var(--primary-dark); }
-
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: flex-end; }
-        .modal-content { background: white; width: 100%; max-width: 600px; border-radius: 24px 24px 0 0; padding: 25px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .close-modal { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-light); }
-        
-        .bank-info { background: #EBF2ED; border: 1px solid var(--accent); padding: 12px; border-radius: 10px; font-size: 13px; margin-top: 10px; color: var(--primary-dark); }
-        
-        .success-box { text-align: center; padding: 20px 0; }
-        .success-box h2 { color: var(--primary); margin-bottom: 10px; }
-        .success-box p { font-size: 14px; color: var(--text-light); margin-bottom: 20px; }
-    </style>
+    .btn-pay { background-color: #27ae60; color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    .btn-pay:active { background-color: #219653; }
+    .copy-note { font-size: 11px; color: #666; text-align: center; margin-top: 6px; line-height: 1.4; }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h1>Blurry Matcha</h1>
-        <p>اختاري طلبك بكل حب واستمتعي بمذاق الماتشا الفريد</p>
-    </header>
-
-    <div class="container">
-        <div class="section-title">✨ قائمة المشروبات والحلى</div>
-        <div class="menu-grid" id="menu-items"></div>
-
-        <div class="section-title">🥛 خيارات الحليب</div>
-        <div class="options-group" id="milk-options">
-            <div class="option-btn active" onclick="selectMilk('حليب عادي')">حليب عادي</div>
-            <div class="option-btn" onclick="selectMilk('حليب الشوفان (+4 ريال)')">حليب الشوفان (+4 SAR)</div>
-            <div class="option-btn" onclick="selectMilk('حليب اللوز (+4 ريال)')">حليب اللوز (+4 SAR)</div>
-        </div>
-
-        <div class="section-title">💳 طريقة الدفع</div>
-        <div class="options-group" id="payment-options">
-            <div class="option-btn active" onclick="selectPayment('تحويل بنكي')">تحويل بنكي (الإنماء)</div>
-            <div class="option-btn" onclick="selectPayment('الدفع عند الاستلام')">الدفع عند الاستلام</div>
-        </div>
-
-        <div id="bank-details-box" class="bank-info">
-            <strong>بيانات تحويل مصرف الإنماء:</strong><br>
-            رقم الآيبان: <span dir="ltr">SA0000000000000000000000</span><br>
-            اسم الحساب: Blurry Matcha
-        </div>
-
-        <div class="section-title">📍 معلومات التوصيل</div>
-        <div class="options-card">
-            <label>اسمك الكريم:</label>
-            <input type="text" id="cust-name" placeholder="اكتبي اسمك هنا...">
-            <label style="margin-top: 10px;">العنوان أو الحي:</label>
-            <input type="text" id="cust-address" placeholder="اسم الحي / الشارع...">
-        </div>
+  <div class="container">
+    <div class="header">
+      <h1>بلوري ماتشا 🍵</h1>
+      <p>اختر مشروبك وأكمل طلبك بسهولة</p>
     </div>
 
-    <div class="cart-summary">
+    <div class="menu-grid">
+      <!-- 1. فانيلا فوم بلوري -->
+      <div class="card">
         <div>
-            <div style="font-size: 12px; color: var(--text-light);">المجموع الكلي:</div>
-            <div class="total-price" id="total-price">0 SAR</div>
+          <div class="ar-name">فانيلا فوم بلوري</div>
+          <div class="en-name">Vanilla Foam Matcha</div>
+          <div class="price">20 SAR</div>
         </div>
-        <button class="checkout-btn" onclick="submitOrder()">إتمام الطلب 🛍️</button>
+        <div style="margin: 8px 0; text-align: right;">
+          <select id="milk-1" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px; margin-bottom: 4px;">
+            <option value="حليب عادي|0">حليب عادي - مجاناً</option>
+            <option value="حليب خالي من اللاكتوز|1">حليب خالي من اللاكتوز (+1)</option>
+            <option value="حليب الشوفان|3">حليب الشوفان (+3)</option>
+            <option value="حليب فانيلا|3">حليب فانيلا (+3)</option>
+            <option value="حليب جوز الهند|3">حليب جوز الهند (+3)</option>
+          </select>
+          <select id="extra-1" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px;">
+            <option value="بدون إضافات|0">بدون إضافات</option>
+            <option value="فوم ملون|2">فوم ملون (+2)</option>
+            <option value="دبل ماتشا|2">دبل ماتشا (+2)</option>
+            <option value="زيادة سيروب|1">زيادة سيروب (+1)</option>
+          </select>
+        </div>
+        <button class="btn-add" onclick="addCustomItem('فانيلا فوم بلوري', 20, 'milk-1', 'extra-1')">+ إضافة للسلة</button>
+      </div>
+
+      <!-- 2. كلاسيك بلوري -->
+      <div class="card">
+        <div>
+          <div class="ar-name">كلاسيك بلوري</div>
+          <div class="en-name">Classic Matcha</div>
+          <div class="price">19 SAR</div>
+        </div>
+        <div style="margin: 8px 0; text-align: right;">
+          <select id="milk-2" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px; margin-bottom: 4px;">
+            <option value="حليب عادي|0">حليب عادي - مجاناً</option>
+            <option value="حليب خالي من اللاكتوز|1">حليب خالي من اللاكتوز (+1)</option>
+            <option value="حليب الشوفان|3">حليب الشوفان (+3)</option>
+            <option value="حليب فانيلا|3">حليب فانيلا (+3)</option>
+            <option value="حليب جوز الهند|3">حليب جوز الهند (+3)</option>
+          </select>
+          <select id="extra-2" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px;">
+            <option value="بدون إضافات|0">بدون إضافات</option>
+            <option value="فوم ملون|2">فوم ملون (+2)</option>
+            <option value="دبل ماتشا|2">دبل ماتشا (+2)</option>
+            <option value="زيادة سيروب|1">زيادة سيروب (+1)</option>
+          </select>
+        </div>
+        <button class="btn-add" onclick="addCustomItem('كلاسيك بلوري', 19, 'milk-2', 'extra-2')">+ إضافة للسلة</button>
+      </div>
+
+      <!-- 3. بنانا بريد بلوري -->
+      <div class="card">
+        <div>
+          <div class="ar-name">بنانا بريد بلوري</div>
+          <div class="en-name">Banana Bread</div>
+          <div class="price">22 SAR</div>
+        </div>
+        <div style="margin: 8px 0; text-align: right;">
+          <select id="milk-3" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px; margin-bottom: 4px;">
+            <option value="حليب عادي|0">حليب عادي - مجاناً</option>
+            <option value="حليب خالي من اللاكتوز|1">حليب خالي من اللاكتوز (+1)</option>
+            <option value="حليب الشوفان|3">حليب الشوفان (+3)</option>
+            <option value="حليب فانيلا|3">حليب فانيلا (+3)</option>
+            <option value="حليب جوز الهند|3">حليب جوز الهند (+3)</option>
+          </select>
+          <select id="extra-3" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px;">
+            <option value="بدون إضافات|0">بدون إضافات</option>
+            <option value="فوم ملون|2">فوم ملون (+2)</option>
+            <option value="دبل ماتشا|2">دبل ماتشا (+2)</option>
+            <option value="زيادة سيروب|1">زيادة سيروب (+1)</option>
+          </select>
+        </div>
+        <button class="btn-add" onclick="addCustomItem('بنانا بريد بلوري', 22, 'milk-3', 'extra-3')">+ إضافة للسلة</button>
+      </div>
+
+      <!-- 4. خليط التوت بلوري -->
+      <div class="card">
+        <div>
+          <div class="ar-name">خليط التوت بلوري</div>
+          <div class="en-name">Mixed berry Matcha</div>
+          <div class="price">23 SAR</div>
+        </div>
+        <div style="margin: 8px 0; text-align: right;">
+          <select id="milk-4" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px; margin-bottom: 4px;">
+            <option value="حليب عادي|0">حليب عادي - مجاناً</option>
+            <option value="حليب خالي من اللاكتوز|1">حليب خالي من اللاكتوز (+1)</option>
+            <option value="حليب الشوفان|3">حليب الشوفان (+3)</option>
+            <option value="حليب فانيلا|3">حليب فانيلا (+3)</option>
+            <option value="حليب جوز الهند|3">حليب جوز الهند (+3)</option>
+          </select>
+          <select id="extra-4" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px;">
+            <option value="بدون إضافات|0">بدون إضافات</option>
+            <option value="فوم ملون|2">فوم ملون (+2)</option>
+            <option value="دبل ماتشا|2">دبل ماتشا (+2)</option>
+            <option value="زيادة سيروب|1">زيادة سيروب (+1)</option>
+          </select>
+        </div>
+        <button class="btn-add" onclick="addCustomItem('خليط التوت بلوري', 23, 'milk-4', 'extra-4')">+ إضافة للسلة</button>
+      </div>
+
+      <!-- 5. فراولة بلوري -->
+      <div class="card">
+        <div>
+          <div class="ar-name">فراولة بلوري</div>
+          <div class="en-name">Strawberry Matcha</div>
+          <div class="price">22 SAR</div>
+        </div>
+        <div style="margin: 8px 0; text-align: right;">
+          <select id="milk-5" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px; margin-bottom: 4px;">
+            <option value="حليب عادي|0">حليب عادي - مجاناً</option>
+            <option value="حليب خالي من اللاكتوز|1">حليب خالي من اللاكتوز (+1)</option>
+            <option value="حليب الشوفان|3">حليب الشوفان (+3)</option>
+            <option value="حليب فانيلا|3">حليب فانيلا (+3)</option>
+            <option value="حليب جوز الهند|3">حليب جوز الهند (+3)</option>
+          </select>
+          <select id="extra-5" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px;">
+            <option value="بدون إضافات|0">بدون إضافات</option>
+            <option value="فوم ملون|2">فوم ملون (+2)</option>
+            <option value="دبل ماتشا|2">دبل ماتشا (+2)</option>
+            <option value="زيادة سيروب|1">زيادة سيروب (+1)</option>
+          </select>
+        </div>
+        <button class="btn-add" onclick="addCustomItem('فراولة بلوري', 22, 'milk-5', 'extra-5')">+ إضافة للسلة</button>
+      </div>
+
+      <!-- 6. سبيشال بلوري -->
+      <div class="card">
+        <div>
+          <div class="ar-name">سبيشال بلوري</div>
+          <div class="en-name">Special Matcha</div>
+          <div class="price">24 SAR</div>
+        </div>
+        <div style="margin: 8px 0; text-align: right;">
+          <select id="milk-6" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px; margin-bottom: 4px;">
+            <option value="حليب عادي|0">حليب عادي - مجاناً</option>
+            <option value="حليب خالي من اللاكتوز|1">حليب خالي من اللاكتوز (+1)</option>
+            <option value="حليب الشوفان|3">حليب الشوفان (+3)</option>
+            <option value="حليب فانيلا|3">حليب فانيلا (+3)</option>
+            <option value="حليب جوز الهند|3">حليب جوز الهند (+3)</option>
+          </select>
+          <select id="extra-6" style="width: 100%; padding: 5px; border-radius: 6px; font-size: 11px;">
+            <option value="بدون إضافات|0">بدون إضافات</option>
+            <option value="فوم ملون|2">فوم ملون (+2)</option>
+            <option value="دبل ماتشا|2">دبل ماتشا (+2)</option>
+            <option value="زيادة سيروب|1">زيادة سيروب (+1)</option>
+          </select>
+        </div>
+        <button class="btn-add" onclick="addCustomItem('سبيشال بلوري', 24, 'milk-6', 'extra-6')">+ إضافة للسلة</button>
+      </div>
     </div>
 
-    <div class="modal" id="orderModal">
-        <div class="modal-content" id="modalBody"></div>
+    <!-- سلة المشتريات -->
+    <div class="section-box">
+      <div class="section-title">🛒 سلة المشتريات</div>
+      <div id="cart-list">
+        <p style="color: #888; font-size: 13px; text-align: center;">السلة فارغة حالياً</p>
+      </div>
+      <div class="total-box">
+        <span>المجموع الكلي:</span>
+        <span id="total-price">0 SAR</span>
+      </div>
     </div>
 
-    <script>
-        const products = [
-            { id: 1, name: "Vanilla Foam", desc: "رغوة الفانيلا الغنية مع الماتشا", price: 20 },
-            { id: 2, name: "Classic Matcha", desc: "الماتشا الكلاسيكية الأصلية", price: 19 },
-            { id: 3, name: "Banana Bread", desc: "خبز الموز الطازج واللذيذ", price: 22 },
-            { id: 4, name: "Mixed Berry", desc: "مكس التوت المنعش", price: 23 },
-            { id: 5, name: "Strawberry", desc: "ماتشا الفراولة اللذيذة", price: 22 },
-            { id: 6, name: "Special Matcha", desc: "خلطة بلوري السبيشل الخاصة", price: 24 }
-        ];
+    <!-- معلومات الطلب وطريقة الدفع -->
+    <div class="section-box">
+      <div class="section-title">📋 بيانات الطلب والدفع</div>
 
-        let cart = {};
-        let selectedMilk = "حليب عادي";
-        let selectedPayment = "تحويل بنكي";
+      <div class="input-group">
+        <label>الاسم</label>
+        <input type="text" id="name" placeholder="أدخل اسمك">
+      </div>
 
-        function renderMenu() {
-            const container = document.getElementById('menu-items');
-            container.innerHTML = products.map(p => `
-                <div class="menu-item">
-                    <div class="item-info">
-                        <h3>${p.name}</h3>
-                        <p>${p.desc}</p>
-                        <div class="item-price">${p.price} SAR</div>
-                    </div>
-                    <div class="counter-controls">
-                        <button class="counter-btn" onclick="updateQty(${p.id}, -1)">-</button>
-                        <span class="counter-value" id="qty-${p.id}">${cart[p.id] || 0}</span>
-                        <button class="counter-btn" onclick="updateQty(${p.id}, 1)">+</button>
-                    </div>
-                </div>
-            `).join('');
-            calcTotal();
-        }
+      <div class="input-group">
+        <label>رقم الجوال</label>
+        <input type="tel" id="phone" placeholder="05xxxxxxxx">
+      </div>
 
-        function updateQty(id, change) {
-            cart[id] = (cart[id] || 0) + change;
-            if (cart[id] < 0) cart[id] = 0;
-            document.getElementById(`qty-${id}`).innerText = cart[id];
-            calcTotal();
-        }
+      <div class="input-group">
+        <label>طريقة الدفع</label>
+        <select id="payment-method" onchange="togglePaymentDetails()">
+          <option value="الدفع عند الاستلام">الدفع عند الاستلام</option>
+          <option value="تحويل بنكي">تحويل بنكي</option>
+        </select>
+        
+        <!-- صندوق بيانات التحويل البنكي يظهر عند اختيار تحويل بنكي -->
+        <div id="bank-info-box" class="bank-info">
+          <strong>بيانات الحساب البنكي:</strong><br>
+          • البنك: <span>مصرف الانماء</span><br>
+          • رقم الآيبان (IBAN):<br>
+          <div class="iban-box">SA5005000068207637482000</div>
+        </div>
 
-        function selectMilk(milk) {
-            selectedMilk = milk;
-            document.querySelectorAll('#milk-options .option-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.innerText === milk);
-            });
-            calcTotal();
-        }
+        <!-- عبارة موقع الاستلام تظهر افتراضياً لأن الخيار الافتراضي هو الدفع عند الاستلام -->
+        <div id="pickup-info-box" class="pickup-info">
+          📍 يتم ارسال موقع استلام الطلب بعد التاكيد
+        </div>
+      </div>
 
-        function selectPayment(payment) {
-            selectedPayment = payment;
-            document.querySelectorAll('#payment-options .option-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.innerText.includes(payment));
-            });
-            document.getElementById('bank-details-box').style.display = payment === 'تحويل بنكي' ? 'block' : 'none';
-        }
+      <button class="btn-pay" onclick="checkout()">إرسال الطلب للاعتماد 🚀</button>
+      <div class="copy-note">لتأكيد الطلب الرجاء ارسال تفاصيل الطلب على الرسائل الخاصة</div>
+    </div>
 
-        function calcTotal() {
-            let total = 0;
-            let hasItems = false;
-            for (let id in cart) {
-                if (cart[id] > 0) {
-                    const p = products.find(item => item.id == id);
-                    total += p.price * cart[id];
-                    hasItems = true;
-                }
-            }
-            if (hasItems && (selectedMilk.includes('الشوفان') || selectedMilk.includes('اللوز'))) {
-                let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
-                total += 4 * totalQty;
-            }
-            document.getElementById('total-price').innerText = total + " SAR";
-        }
+  </div>
 
-        function submitOrder() {
-            const name = document.getElementById('cust-name').value.trim();
-            const address = document.getElementById('cust-address').value.trim();
-            
-            let orderSummary = "📋 طلب جديد من Blurry Matcha:\n\n";
-            let hasItems = false;
-            let total = 0;
+  <script>
+    let cart = [];
+    let total = 0;
 
-            for (let id in cart) {
-                if (cart[id] > 0) {
-                    const p = products.find(item => item.id == id);
-                    orderSummary += `- ${p.name} × ${cart[id]} (${p.price * cart[id]} SAR)\n`;
-                    total += p.price * cart[id];
-                    hasItems = true;
-                }
-            }
+    function addCustomItem(baseName, basePrice, milkSelectId, extraSelectId) {
+      const milkEl = document.getElementById(milkSelectId);
+      const extraEl = document.getElementById(extraSelectId);
 
-            if (!hasItems) {
-                alert("الرجاء اختيار منتج واحد على الأقل قبل إتمام الطلب! ✨");
-                return;
-            }
+      const milkData = milkEl.value.split('|');
+      const extraData = extraEl.value.split('|');
 
-            if (!name || !address) {
-                alert("الرجاء إدخال الاسم والعنوان لتوصيل الطلب بدقة 📍");
-                return;
-            }
+      const milkName = milkData[0];
+      const milkPrice = parseInt(milkData[1]);
 
-            if (selectedMilk.includes('الشوفان') || selectedMilk.includes('اللوز')) {
-                let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
-                total += 4 * totalQty;
-            }
+      const extraName = extraData[0];
+      const extraPrice = parseInt(extraData[1]);
 
-            orderSummary += `\n🥛 خيار الحليب: ${selectedMilk}`;
-            orderSummary += `\n💳 طريقة الدفع: ${selectedPayment}`;
-            orderSummary += `\n👤 الاسم: ${name}`;
-            orderSummary += `\n📍 العنوان: ${address}`;
-            orderSummary += `\n💰 المجموع الكلي: ${total} SAR`;
+      const finalPrice = basePrice + milkPrice + extraPrice;
+      
+      let details = baseName;
+      if (milkName !== 'حليب عادي') details += ` (${milkName})`;
+      if (extraName !== 'بدون إضافات') details += ` + ${extraName}`;
 
-            navigator.clipboard.writeText(orderSummary);
+      cart.push({ name: details, price: finalPrice });
+      total += finalPrice;
+      updateCartUI();
+    }
 
-            const modal = document.getElementById('orderModal');
-            const modalBody = document.getElementById('modalBody');
-            
-            modalBody.innerHTML = `
-                <div class="modal-header">
-                    <h3>تأكيد الطلب</h3>
-                    <button class="close-modal" onclick="closeModal()">✕</button>
-                </div>
-                <div class="success-box">
-                    <h2>تم نسخ تفاصيل طلبك بنجاح! 🎉</h2>
-                    <p>اضغطي الزر أدناه للانتقال إلى صفحة الإنستغرام، ولصق الطلب في رسالة خاصة لنا لتأكيده فوراً.</p>
-                    <button class="checkout-btn" style="width: 100%; padding: 14px;" onclick="window.location.href='https://www.instagram.com/blurry1.s'">الانتقال إلى إنستغرام ↗</button>
-                </div>
-            `;
-            modal.style.display = 'flex';
-        }
+    function updateCartUI() {
+      const cartList = document.getElementById('cart-list');
+      const totalPrice = document.getElementById('total-price');
 
-        function closeModal() {
-            document.getElementById('orderModal').style.display = 'none';
-        }
+      if (cart.length === 0) {
+        cartList.innerHTML = '<p style="color: #888; font-size: 13px; text-align: center;">السلة فارغة حالياً</p>';
+      } else {
+        cartList.innerHTML = '';
+        cart.forEach((item, index) => {
+          cartList.innerHTML += `
+            <div class="cart-item">
+              <div>
+                <span style="font-weight: bold; display: block; color: #2b3a32;">${item.name}</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-weight: bold; color: #2873b5;">${item.price} SAR</span>
+                <button onclick="removeItem(${index})" style="background: #ffcccc; color: #c0392b; border: none; border-radius: 4px; padding: 2px 6px; font-size: 11px; cursor: pointer;">حذف</button>
+              </div>
+            </div>
+          `;
+        });
+      }
+      totalPrice.innerText = total + ' SAR';
+    }
 
-        renderMenu();
-    </script>
+    function removeItem(index) {
+      total -= cart[index].price;
+      cart.splice(index, 1);
+      updateCartUI();
+    }
+
+    // دالة تبديل العناصر بناءً على طريقة الدفع المختارة
+    function togglePaymentDetails() {
+      const paymentMethod = document.getElementById('payment-method').value;
+      const bankInfoBox = document.getElementById('bank-info-box');
+      const pickupInfoBox = document.getElementById('pickup-info-box');
+
+      if (paymentMethod === 'تحويل بنكي') {
+        bankInfoBox.style.display = 'block';
+        pickupInfoBox.style.display = 'none';
+      } else {
+        bankInfoBox.style.display = 'none';
+        pickupInfoBox.style.display = 'block';
+      }
+    }
+
+    function fallbackCopy(text) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+      } catch (err) {}
+      document.body.removeChild(textArea);
+    }
+
+    function copyToClipboard(text, callback) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(callback).catch(() => {
+          fallbackCopy(text);
+          callback();
+        });
+      } else {
+        fallbackCopy(text);
+        callback();
+      }
+    }
+
+    function checkout() {
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const paymentMethod = document.getElementById('payment-method').value;
+
+      if (cart.length === 0) { alert('يرجى إضافة مشروب للسلة أولاً!'); return; }
+      if (!name || !phone) { alert('يرجى تعبئة بيانات الاسم ورقم الجوال.'); return; }
+
+      let fullOrderText = `أهلاً، أرغب بتأكيد طلبي:\n`;
+      fullOrderText += `👤 الاسم: ${name}\n`;
+      fullOrderText += `📱 الجوال: ${phone}\n\n`;
+      cart.forEach(item => {
+        fullOrderText += `- ${item.name}\n`;
+      });
+      fullOrderText += `طريقة الدفع: ${paymentMethod}\n`;
+      fullOrderText += `💰 المجموع الكلي: ${total} SAR`;
+
+      copyToClipboard(fullOrderText, () => {
+        alert('تم النسخ شكراً لطلبك 💎');
+        window.location.href = 'https://www.instagram.com/blurry1.s?igsh=ZXJ2cHJ3YWU5Zzd4&utm_source=qr';
+      });
+    }
+  </script>
+
 </body>
 </html>
