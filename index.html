@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blurry Matcha | بلوري ماتشا</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4A6B5B;
+            --primary-dark: #375043;
+            --accent: #87A997;
+            --bg: #F4F7F5;
+            --card-bg: #FFFFFF;
+            --text: #2C3E35;
+            --text-light: #707967;
+            --border: #E0E5D8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 90px; }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 0 0 24px 24px;
+            box-shadow: 0 4px 15px rgba(74, 107, 91, 0.2);
+        }
+
+        header h1 { font-size: 26px; font-weight: 900; margin-bottom: 5px; }
+        header p { font-size: 14px; opacity: 0.9; }
+
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .section-title { font-size: 18px; font-weight: 700; margin: 25px 0 12px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        
+        .menu-grid { display: flex; flex-direction: column; gap: 12px; }
+        .menu-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+        .item-info h3 { font-size: 16px; font-weight: 700; color: var(--text); }
+        .item-info p { font-size: 13px; color: var(--text-light); margin-top: 2px; }
+        .item-price { font-size: 15px; font-weight: 800; color: var(--primary); margin-top: 4px; }
+
+        .counter-controls { display: flex; align-items: center; gap: 10px; background: var(--bg); padding: 4px 8px; border-radius: 8px; border: 1px solid var(--border); }
+        .counter-btn { background: var(--primary); color: white; border: none; width: 28px; height: 28px; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .counter-value { font-size: 15px; font-weight: 700; min-width: 20px; text-align: center; }
+
+        .options-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-top: 15px; }
+        .options-card label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+        .options-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px; }
+        .option-btn { background: var(--bg); border: 1px solid var(--border); padding: 10px; border-radius: 8px; text-align: center; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--text); transition: all 0.2s; }
+        .option-btn.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 700; }
+
+        input[type="text"] { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; outline: none; background: var(--bg); margin-top: 5px; }
+
+        .cart-summary { background: var(--card-bg); border-top: 2px solid var(--primary); padding: 15px 20px; position: fixed; bottom: 0; left: 0; right: 0; box-shadow: 0 -4px 15px rgba(0,0,0,0.08); display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+        .total-price { font-size: 18px; font-weight: 900; color: var(--primary); }
+        .checkout-btn { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+        .checkout-btn:hover { background: var(--primary-dark); }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: flex-end; }
+        .modal-content { background: white; width: 100%; max-width: 600px; border-radius: 24px 24px 0 0; padding: 25px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .close-modal { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text-light); }
+        
+        .bank-info { background: #EBF2ED; border: 1px solid var(--accent); padding: 12px; border-radius: 10px; font-size: 13px; margin-top: 10px; color: var(--primary-dark); }
+        
+        .success-box { text-align: center; padding: 20px 0; }
+        .success-box h2 { color: var(--primary); margin-bottom: 10px; }
+        .success-box p { font-size: 14px; color: var(--text-light); margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Blurry Matcha</h1>
+        <p>اختاري طلبك بكل حب واستمتعي بمذاق الماتشا الفريد</p>
+    </header>
+
+    <div class="container">
+        <div class="section-title">✨ قائمة المشروبات والحلى</div>
+        <div class="menu-grid" id="menu-items"></div>
+
+        <div class="section-title">🥛 خيارات الحليب</div>
+        <div class="options-group" id="milk-options">
+            <div class="option-btn active" onclick="selectMilk('حليب عادي')">حليب عادي</div>
+            <div class="option-btn" onclick="selectMilk('حليب الشوفان (+4 ريال)')">حليب الشوفان (+4 SAR)</div>
+            <div class="option-btn" onclick="selectMilk('حليب اللوز (+4 ريال)')">حليب اللوز (+4 SAR)</div>
+        </div>
+
+        <div class="section-title">💳 طريقة الدفع</div>
+        <div class="options-group" id="payment-options">
+            <div class="option-btn active" onclick="selectPayment('تحويل بنكي')">تحويل بنكي (الإنماء)</div>
+            <div class="option-btn" onclick="selectPayment('الدفع عند الاستلام')">الدفع عند الاستلام</div>
+        </div>
+
+        <div id="bank-details-box" class="bank-info">
+            <strong>بيانات تحويل مصرف الإنماء:</strong><br>
+            رقم الآيبان: <span dir="ltr">SA0000000000000000000000</span><br>
+            اسم الحساب: Blurry Matcha
+        </div>
+
+        <div class="section-title">📍 معلومات التوصيل</div>
+        <div class="options-card">
+            <label>اسمك الكريم:</label>
+            <input type="text" id="cust-name" placeholder="اكتبي اسمك هنا...">
+            <label style="margin-top: 10px;">العنوان أو الحي:</label>
+            <input type="text" id="cust-address" placeholder="اسم الحي / الشارع...">
+        </div>
+    </div>
+
+    <div class="cart-summary">
+        <div>
+            <div style="font-size: 12px; color: var(--text-light);">المجموع الكلي:</div>
+            <div class="total-price" id="total-price">0 SAR</div>
+        </div>
+        <button class="checkout-btn" onclick="submitOrder()">إتمام الطلب 🛍️</button>
+    </div>
+
+    <div class="modal" id="orderModal">
+        <div class="modal-content" id="modalBody"></div>
+    </div>
+
+    <script>
+        const products = [
+            { id: 1, name: "Vanilla Foam", desc: "رغوة الفانيلا الغنية مع الماتشا", price: 20 },
+            { id: 2, name: "Classic Matcha", desc: "الماتشا الكلاسيكية الأصلية", price: 19 },
+            { id: 3, name: "Banana Bread", desc: "خبز الموز الطازج واللذيذ", price: 22 },
+            { id: 4, name: "Mixed Berry", desc: "مكس التوت المنعش", price: 23 },
+            { id: 5, name: "Strawberry", desc: "ماتشا الفراولة اللذيذة", price: 22 },
+            { id: 6, name: "Special Matcha", desc: "خلطة بلوري السبيشل الخاصة", price: 24 }
+        ];
+
+        let cart = {};
+        let selectedMilk = "حليب عادي";
+        let selectedPayment = "تحويل بنكي";
+
+        function renderMenu() {
+            const container = document.getElementById('menu-items');
+            container.innerHTML = products.map(p => `
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h3>${p.name}</h3>
+                        <p>${p.desc}</p>
+                        <div class="item-price">${p.price} SAR</div>
+                    </div>
+                    <div class="counter-controls">
+                        <button class="counter-btn" onclick="updateQty(${p.id}, -1)">-</button>
+                        <span class="counter-value" id="qty-${p.id}">${cart[p.id] || 0}</span>
+                        <button class="counter-btn" onclick="updateQty(${p.id}, 1)">+</button>
+                    </div>
+                </div>
+            `).join('');
+            calcTotal();
+        }
+
+        function updateQty(id, change) {
+            cart[id] = (cart[id] || 0) + change;
+            if (cart[id] < 0) cart[id] = 0;
+            document.getElementById(`qty-${id}`).innerText = cart[id];
+            calcTotal();
+        }
+
+        function selectMilk(milk) {
+            selectedMilk = milk;
+            document.querySelectorAll('#milk-options .option-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText === milk);
+            });
+            calcTotal();
+        }
+
+        function selectPayment(payment) {
+            selectedPayment = payment;
+            document.querySelectorAll('#payment-options .option-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.includes(payment));
+            });
+            document.getElementById('bank-details-box').style.display = payment === 'تحويل بنكي' ? 'block' : 'none';
+        }
+
+        function calcTotal() {
+            let total = 0;
+            let hasItems = false;
+            for (let id in cart) {
+                if (cart[id] > 0) {
+                    const p = products.find(item => item.id == id);
+                    total += p.price * cart[id];
+                    hasItems = true;
+                }
+            }
+            if (hasItems && (selectedMilk.includes('الشوفان') || selectedMilk.includes('اللوز'))) {
+                let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
+                total += 4 * totalQty;
+            }
+            document.getElementById('total-price').innerText = total + " SAR";
+        }
+
+        function submitOrder() {
+            const name = document.getElementById('cust-name').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+            
+            let orderSummary = "📋 طلب جديد من Blurry Matcha:\n\n";
+            let hasItems = false;
+            let total = 0;
+
+            for (let id in cart) {
+                if (cart[id] > 0) {
+                    const p = products.find(item => item.id == id);
+                    orderSummary += `- ${p.name} × ${cart[id]} (${p.price * cart[id]} SAR)\n`;
+                    total += p.price * cart[id];
+                    hasItems = true;
+                }
+            }
+
+            if (!hasItems) {
+                alert("الرجاء اختيار منتج واحد على الأقل قبل إتمام الطلب! ✨");
+                return;
+            }
+
+            if (!name || !address) {
+                alert("الرجاء إدخال الاسم والعنوان لتوصيل الطلب بدقة 📍");
+                return;
+            }
+
+            if (selectedMilk.includes('الشوفان') || selectedMilk.includes('اللوز')) {
+                let totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
+                total += 4 * totalQty;
+            }
+
+            orderSummary += `\n🥛 خيار الحليب: ${selectedMilk}`;
+            orderSummary += `\n💳 طريقة الدفع: ${selectedPayment}`;
+            orderSummary += `\n👤 الاسم: ${name}`;
+            orderSummary += `\n📍 العنوان: ${address}`;
+            orderSummary += `\n💰 المجموع الكلي: ${total} SAR`;
+
+            navigator.clipboard.writeText(orderSummary);
+
+            const modal = document.getElementById('orderModal');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalBody.innerHTML = `
+                <div class="modal-header">
+                    <h3>تأكيد الطلب</h3>
+                    <button class="close-modal" onclick="closeModal()">✕</button>
+                </div>
+                <div class="success-box">
+                    <h2>تم نسخ تفاصيل طلبك بنجاح! 🎉</h2>
+                    <p>اضغطي الزر أدناه للانتقال إلى صفحة الإنستغرام، ولصق الطلب في رسالة خاصة لنا لتأكيده فوراً.</p>
+                    <button class="checkout-btn" style="width: 100%; padding: 14px;" onclick="window.location.href='https://www.instagram.com/blurry1.s'">الانتقال إلى إنستغرام ↗</button>
+                </div>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        renderMenu();
+    </script>
+</body>
+</html>
